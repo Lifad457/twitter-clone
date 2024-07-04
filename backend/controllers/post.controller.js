@@ -254,7 +254,7 @@ export const getFollowingPosts = async (req, res) => {
 			.sort({ createdAt: -1 })
 			.populate({ path: 'user', select: '-password' })
 			.populate({ path: 'comments.user', select: '-password' });
-		console.log(feedPosts);
+
 		if (feedPosts.length === 0) {
 			return res.status(200).json([]);
 		}
@@ -264,6 +264,36 @@ export const getFollowingPosts = async (req, res) => {
 		});
 	} catch (error) {
 		console.log('Error in getFollowingPosts : ', error.message);
+		res.status(500).json({
+			message: 'Internal server error!',
+		});
+	}
+};
+
+export const getUserPosts = async (req, res) => {
+	try {
+		const userName = req.params.username;
+		const user = await User.findOne({ username: userName });
+		if (!user) {
+			return res.status(404).json({
+				message: 'User not found!',
+			});
+		}
+
+		const posts = await Post.find({ user: user._id })
+			.sort({ createdAt: -1 })
+			.populate({ path: 'user', select: '-password' })
+			.populate({ path: 'comments.user', select: '-password' });
+
+		if (posts.length === 0) {
+			return res.status(200).json([]);
+		}
+
+		res.status(200).json({
+			posts,
+		});
+	} catch (error) {
+		console.log('Error in getUserPosts : ', error.message);
 		res.status(500).json({
 			message: 'Internal server error!',
 		});
