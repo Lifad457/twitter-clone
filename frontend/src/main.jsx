@@ -8,9 +8,12 @@ import {
 	createRoutesFromElements,
 } from 'react-router-dom';
 import './index.css';
+
 import HomePage from './pages/home/HomePage.jsx';
 import SignUpPage from './pages/auth/signup/SignUpPage.jsx';
 import LoginPage from './pages/auth/login/LoginPage.jsx';
+import NotificationPage from './pages/notification/NotificationPage.jsx';
+import ProfilePage from './pages/profile/ProfilePage.jsx';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -18,6 +21,8 @@ const router = createBrowserRouter(
 			<Route index element={<HomePage />} />
 			<Route path='signup' element={<SignUpPage />} />
 			<Route path='login' element={<LoginPage />} />
+			<Route path='notifications' element={<NotificationPage />} />
+			<Route path='profile/:username' element={<ProfilePage />} />
 		</Route>
 	)
 );
