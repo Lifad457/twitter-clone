@@ -7,19 +7,22 @@ import { MdOutlineMail } from 'react-icons/md';
 import { FaUser } from 'react-icons/fa';
 import { MdPassword } from 'react-icons/md';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
-import { useMutation } from '@tanstack/react-query';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 const SignUpPage = () => {
 	const [formData, setFormData] = useState({
 		email: '',
 		username: '',
-		fullName: '',
+		fullname: '',
 		password: '',
 	});
 
+	const queryClient = useQueryClient();
+
 	const { mutate, isError, isPending, error } = useMutation({
-		mutationFn: async ({ email, username, fullName, password }) => {
+		mutationFn: async ({ email, username, fullname, password }) => {
 			try {
 				const response = await fetch('/api/auth/signup', {
 					method: 'POST',
@@ -29,23 +32,25 @@ const SignUpPage = () => {
 					body: JSON.stringify({
 						email,
 						username,
-						fullName,
+						fullname,
 						password,
 					}),
 				});
-				if (!response.ok) {
-					throw new Error('Something went wrong');
-				}
+
 				const data = await response.json();
-				if (data.error) {
-					throw new Error(data.error);
-				}
+				if (!response.ok)
+					throw new Error(data.error || 'Failed to create account');
 				console.log(data);
 				return data;
 			} catch (error) {
 				console.error(error);
 				toast.error(error.message);
+				throw error;
 			}
+		},
+		onSuccess: () => {
+			toast.success('Account created successfully');
+			queryClient.invalidateQueries({ queryKey: ['authUser'] });
 		},
 	});
 
@@ -101,9 +106,9 @@ const SignUpPage = () => {
 								type='text'
 								className='grow'
 								placeholder='Full Name'
-								name='fullName'
+								name='fullname'
 								onChange={handleInputChange}
-								value={formData.fullName}
+								value={formData.fullname}
 							/>
 						</label>
 					</div>
