@@ -1,34 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import {
-	Route,
-	RouterProvider,
-	createBrowserRouter,
-	createRoutesFromElements,
-} from 'react-router-dom';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import HomePage from './pages/home/HomePage.jsx';
-import SignUpPage from './pages/auth/signup/SignUpPage.jsx';
-import LoginPage from './pages/auth/login/LoginPage.jsx';
-import NotificationPage from './pages/notification/NotificationPage.jsx';
-import ProfilePage from './pages/profile/ProfilePage.jsx';
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+		},
+	},
+});
 
-const router = createBrowserRouter(
-	createRoutesFromElements(
-		<Route path='/' element={<App />}>
-			<Route index element={<HomePage />} />
-			<Route path='signup' element={<SignUpPage />} />
-			<Route path='login' element={<LoginPage />} />
-			<Route path='notifications' element={<NotificationPage />} />
-			<Route path='profile/:username' element={<ProfilePage />} />
-		</Route>
-	)
-);
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<BrowserRouter>
+			<QueryClientProvider client={queryClient}>
+				<App />
+			</QueryClientProvider>
+		</BrowserRouter>
 	</React.StrictMode>
 );
