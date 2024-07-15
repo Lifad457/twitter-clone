@@ -191,9 +191,7 @@ export const getAllPosts = async (req, res) => {
 			return res.status(200).json([]);
 		}
 
-		res.status(200).json({
-			posts,
-		});
+		res.status(200).json(posts);
 	} catch (error) {
 		console.log('Error in getAllPosts : ', error.message);
 		res.status(500).json({
@@ -227,9 +225,7 @@ export const getLikedPosts = async (req, res) => {
 			return res.status(200).json([]);
 		}
 
-		res.status(200).json({
-			likedPosts,
-		});
+		res.status(200).json(likedPosts);
 	} catch (error) {
 		console.log('Error in getLikedPosts : ', error.message);
 		res.status(500).json({
@@ -259,9 +255,7 @@ export const getFollowingPosts = async (req, res) => {
 			return res.status(200).json([]);
 		}
 
-		res.status(200).json({
-			feedPosts,
-		});
+		res.status(200).json(feedPosts);
 	} catch (error) {
 		console.log('Error in getFollowingPosts : ', error.message);
 		res.status(500).json({
@@ -289,9 +283,7 @@ export const getUserPosts = async (req, res) => {
 			return res.status(200).json([]);
 		}
 
-		res.status(200).json({
-			posts,
-		});
+		res.status(200).json(posts);
 	} catch (error) {
 		console.log('Error in getUserPosts : ', error.message);
 		res.status(500).json({
