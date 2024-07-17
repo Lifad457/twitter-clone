@@ -11,7 +11,7 @@ import RightPanel from './components/common/RightPanel';
 
 import { Toaster } from 'react-hot-toast';
 import LoadingSpinner from './components/common/LoadingSpinner';
-import { useAuth } from './utils/useAuth';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
 	const { isLoading, authUser } = useAuth();
