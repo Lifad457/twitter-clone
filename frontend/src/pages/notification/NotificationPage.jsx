@@ -1,35 +1,61 @@
 import { Link } from 'react-router-dom';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import { IoSettingsOutline } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa6';
 
 const NotificationPage = () => {
-	const isLoading = false;
-	const notifications = [
-		{
-			_id: '1',
-			from: {
-				_id: '1',
-				username: 'johndoe',
-				profileImg: '/avatars/boy2.png',
-			},
-			type: 'follow',
+	const queryClient = useQueryClient();
+	const { data: notifications, isLoading } = useQuery({
+		queryKey: ['notifications'],
+		queryFn: async () => {
+			try {
+				const response = await fetch('/api/notifications');
+				const data = await response.json();
+				if (!response.ok)
+					throw new Error(
+						data.message || 'Failed to get notifications'
+					);
+				return data;
+			} catch (error) {
+				console.error(error);
+				throw error;
+			}
 		},
-		{
-			_id: '2',
-			from: {
-				_id: '2',
-				username: 'janedoe',
-				profileImg: '/avatars/girl1.png',
-			},
-			type: 'like',
-		},
-	];
+	});
 
-	const deleteNotifications = () => {
-		alert('All notifications deleted');
+	const { mutate: deleteNotificationsMutation } = useMutation({
+		mutationFn: async () => {
+			try {
+				const response = await fetch('/api/notifications', {
+					method: 'DELETE',
+				});
+
+				const data = await response.json();
+				if (!response.ok)
+					throw new Error(
+						data.message || 'Failed to delete notifications'
+					);
+				return data;
+			} catch (error) {
+				console.error(error);
+				throw error;
+			}
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['notifications'] });
+			toast.success('Notifications deleted successfully!');
+		},
+		onError: (error) => {
+			toast.error(error.message);
+		},
+	});
+
+	const handleDeleteNotifications = () => {
+		deleteNotificationsMutation();
 	};
 
 	return (
@@ -46,7 +72,7 @@ const NotificationPage = () => {
 							className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'
 						>
 							<li>
-								<a onClick={deleteNotifications}>
+								<a onClick={handleDeleteNotifications}>
 									Delete all notifications
 								</a>
 							</li>
