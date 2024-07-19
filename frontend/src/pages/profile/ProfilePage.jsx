@@ -48,7 +48,7 @@ const ProfilePage = () => {
 		},
 	});
 
-	const isMyProfile = user?._id === authUser?._id;
+	const isMyProfile = user?._id === authUser._id;
 	const memberSince = formatMemberSinceDate(user?.createdAt);
 
 	const handleImgChange = (e, state) => {
@@ -258,7 +258,11 @@ const ProfilePage = () => {
 						</>
 					)}
 
-					<Posts feedType={feedType} username={username} userId={user?._id} />
+					<Posts
+						feedType={feedType}
+						username={username}
+						userId={user?._id}
+					/>
 				</div>
 			</div>
 		</>

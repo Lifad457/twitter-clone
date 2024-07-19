@@ -7,15 +7,15 @@ const Posts = ({ feedType, username, userId }) => {
 	const getPostsEnpoint = () => {
 		switch (feedType) {
 			case 'forYou':
-				return 'api/posts/all';
+				return '/api/posts/all';
 			case 'following':
-				return 'api/posts/following';
+				return '/api/posts/following';
 			case 'posts':
-				return `api/posts/user/${username}`;
+				return `/api/posts/user/${username}`;
 			case 'likes':
-				return `api/posts/likes/${userId}`;
+				return `/api/posts/likes/${userId}`;
 			default:
-				return 'api/posts/all';
+				return '/api/posts/all';
 		}
 	};
 
@@ -32,7 +32,7 @@ const Posts = ({ feedType, username, userId }) => {
 			try {
 				const response = await fetch(POST_ENDPOINT);
 				const data = await response.json();
-				
+
 				if (!response.ok) {
 					throw new Error(data.message || 'Failed to get posts');
 				}
@@ -47,7 +47,7 @@ const Posts = ({ feedType, username, userId }) => {
 
 	useEffect(() => {
 		refetch();
-	}, [feedType, refetch, username]);
+	}, [feedType, refetch, username, userId]);
 
 	return (
 		<>
