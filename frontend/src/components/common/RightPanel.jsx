@@ -55,7 +55,7 @@ const RightPanel = () => {
 										<div className='w-8 rounded-full'>
 											<img
 												src={
-													user.profileImg ||
+													user.profilePicture ||
 													'/avatar-placeholder.png'
 												}
 											/>
