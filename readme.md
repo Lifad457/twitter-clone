@@ -38,3 +38,12 @@ res.sendFile(path.resolve(**dirname, 'frontend', 'dist', 'index.html'));
 then in frontend termianl run npm run build and npm run start
 
 localhost:5000
+
+in render.com -> deploy webservice from github
+
+build command -> npm run build
+start command -> npm run start
+
+add the env variables in render.com (minus NODE_ENV=development)
+
+then create web service
